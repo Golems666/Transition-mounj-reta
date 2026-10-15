@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transition Mounjaro / Wegovy → Retatrutide</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --accent: #00d4aa;
+      --accent2: #7c5cff;
+      --text: #e8eef7;
+      --muted: #8b9bb4;
+      --warning: #ff6b6b;
+      --border: #2a3548;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(145deg, #0f1419 0%, #1a1f2e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0f1419;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    select:focus, input:focus {
+      border-color: var(--accent);
+    }
+    .result {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(124,92,255,0.08));
+      border: 1px solid rgba(0,212,170,0.25);
+      border-radius: 12px;
+    }
+    .result.show { display: block; }
+    .result-title {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .dose-big {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .dose-target {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .dose-target span {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+    .info-box {
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.3);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #ffb4b4;
+      margin-top: 16px;
+    }
+    .info-box strong { color: var(--warning); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    td:last-child, th:last-child { text-align: right; }
+    .note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 16px;
+      line-height: 1.55;
+    }
+    .steps {
+      list-style: none;
+      counter-reset: step;
+    }
+    .steps li {
+      position: relative;
+      padding-left: 42px;
+      margin-bottom: 14px;
+      font-size: 0.92rem;
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #0f1419;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Transition Mounjaro → Retatrutide</h1>
+    <p class="subtitle">Outil indicatif basé sur les pratiques courantes (pas de conversion officielle)</p>
+
+    <div class="card">
+      <h2>1. Indique ta dose actuelle de Mounjaro</h2>
+      <label for="mounjaro">Dose de tirzépatide (Mounjaro) que tu prenais</label>
+      <select id="mounjaro">
+        <option value="">— Choisir —</option>
+        <option value="2.5">2,5 mg</option>
+        <option value="5">5 mg</option>
+        <option value="7.5">7,5 mg</option>
+        <option value="10">10 mg</option>
+        <option value="12.5">12,5 mg</option>
+        <option value="15">15 mg</option>
+      </select>
+
+      <div id="result" class="result">
+        <div class="result-title">Dose de départ recommandée de Retatrutide</div>
+        <div class="dose-big" id="start-dose">—</div>
+        <div class="dose-target">Approche progressive : <span id="target-dose">—</span></div>
+        <p style="font-size:0.9rem;color:var(--muted);margin-top:8px;" id="comment"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Tableau récapitulatif (approche prudente & flexible)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Mounjaro (tirzépatide)</th>
+            <th>Départ Reta</th>
+            <th>Approche progressive recommandée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2,5 mg</td>
+            <td>0,5 – 1 mg</td>
+            <td>Monter doucement. Souvent suffisant de rester entre 2 et 4 mg</td>
+          </tr>
+          <tr>
+            <td>5 mg</td>
+            <td>1 – 1,5 mg</td>
+            <td>Viser 4 mg. Beaucoup restent longtemps à 4 mg</td>
+          </tr>
+          <tr>
+            <td>7,5 mg</td>
+            <td>1,5 – 2 mg</td>
+            <td>4 → 6 mg. Souvent efficace dès 6 mg</td>
+          </tr>
+          <tr>
+            <td>10 mg</td>
+            <td>2 mg</td>
+            <td>4 → 6 → 8 mg. On peut rester longtemps à 6 mg puis +1 mg</td>
+          </tr>
+          <tr>
+            <td>12,5 – 15 mg</td>
+            <td>2 mg</td>
+            <td>4 → 6 → 8 mg (voire 9-12). <strong>Pas obligé d’aller au max</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-box" style="margin-top:18px; background:rgba(0,212,170,0.08); border-color:rgba(0,212,170,0.3); color:#a8e6d4;">
+        <strong style="color:var(--accent);">À dose efficace → on ne monte plus</strong><br><br>
+        Le protocole officiel de recherche (2 → 4 → 6/8 → 9 → 12 mg) monte souvent trop vite.<br>
+        Tu peux très bien rester plusieurs semaines (voire des mois) sur une dose qui fonctionne bien (ex. 6 mg), puis n’augmenter que de <strong>1 mg</strong> si besoin.
+      </div>
+
+      <p class="note">
+        Tout le monde redémarre bas. Même à 15 mg de Mounjaro, on ne commence pas directement à 8 ou 12 mg de rétatrutide.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3. Protocole de transition typique</h2>
+      <ol class="steps">
+        <li>Prends ta dernière injection de Mounjaro normalement.</li>
+        <li>Attends 7 jours (un intervalle d’injection). Pas de wash-out long nécessaire dans la plupart des cas.</li>
+        <li>Commence le rétatrutide à la dose de départ indiquée ci-dessus.</li>
+        <li>Reste au moins 3–4 semaines sur la même dose avant d’augmenter (tolérance digestive + glucagon).</li>
+        <li>Monte progressivement selon ta réponse, <strong>pas forcément selon le protocole officiel de recherche</strong>.</li>
+      </ol>
+
+      <div class="info-box" style="margin-top:20px; background:rgba(0,212,170,0.08); border-color:rgba(0,212,170,0.3); color:#a8e6d4;">
+        <strong style="color:var(--accent);">Important – on ne monte pas forcément jusqu’au bout</strong><br><br>
+        Le protocole de recherche officiel (2 → 4 → 6/8 → 9 → 12 mg) monte assez vite. Beaucoup de personnes trouvent que ça monte trop.<br><br>
+        <strong>À dose efficace, on ne monte plus.</strong> Si tu es bien à 4 mg, 6 mg ou 8 mg (bon contrôle de l’appétit, perte de poids satisfaisante, effets secondaires gérables), tu peux très bien rester longtemps à cette dose.<br><br>
+        Tu peux aussi monter plus doucement : rester plusieurs semaines à un bon dosage (ex. 6 mg), puis n’augmenter que de 1 mg si besoin. Ça suffit souvent.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Points importants</h2>
+      <div class="info-box">
+        <strong>Aucune conversion officielle n’existe.</strong><br>
+        Le rétatrutide est un triple agoniste (GLP-1 + GIP + glucagon). Le glucagon est nouveau pour ton corps → risque de nausées, fatigue ou effets secondaires plus marqués si on démarre trop haut.<br><br>
+        Les doses ci-dessus sont des <strong>indications basées sur les pratiques cliniques et les forums spécialisés</strong>, pas des recommandations médicales.
+      </div>
+      <p class="note" style="margin-top:16px;">
+        Retatrutide n’est pas encore approuvé (en phase 3). Toute utilisation se fait hors AMM et sous ta responsabilité. Discute toujours avec un médecin qui connaît ces molécules.
+      </p>
+    </div>
+
+    <footer>
+      Outil informatif uniquement • Pas un avis médical • Octobre 2026
+    </footer>
+  </div>
+
+  <script>
+    const data = {
+      "2.5": { start: "0,5 – 1 mg", target: "rester entre 2 et 4 mg", comment: "Tu étais encore en phase d’initiation. Démarre très bas et monte tranquillement. Souvent pas besoin d’aller plus haut." },
+      "5":   { start: "1 – 1,5 mg", target: "4 mg (beaucoup restent là)", comment: "Dose intermédiaire. 1–1,5 mg de départ est prudent. Beaucoup restent longtemps à 4 mg." },
+      "7.5": { start: "1,5 – 2 mg", target: "4 → 6 mg (souvent efficace dès 6 mg)", comment: "Beaucoup démarrent à 2 mg. Souvent efficace dès 6 mg – pas obligé de monter plus." },
+      "10":  { start: "2 mg", target: "4 → 6 → 8 mg (rester à 6 mg possible)", comment: "Repartir à 2 mg. Tu peux rester longtemps à 6 mg puis n’augmenter que de 1 mg si besoin." },
+      "12.5":{ start: "2 mg", target: "4 → 6 → 8 mg (pas obligé d’aller au max)", comment: "Même à haute dose de Mounjaro, on redémarre à 2 mg. Pas besoin d’aller forcément à 12 mg." },
+      "15":  { start: "2 mg", target: "4 → 6 → 8 mg (pas obligé d’aller au max)", comment: "Idem. À dose efficace on ne monte plus. 6 ou 8 mg suffisent souvent." }
+    };
+
+    const select = document.getElementById('mounjaro');
+    const result = document.getElementById('result');
+    const startDose = document.getElementById('start-dose');
+    const targetDose = document.getElementById('target-dose');
+    const comment = document.getElementById('comment');
+
+    select.addEventListener('change', () => {
+      const val = select.value;
+      if (!val) {
+        result.classList.remove('show');
+        return;
+      }
+      const d = data[val];
+      startDose.textContent = d.start;
+      targetDose.textContent = d.target;
+      comment.textContent = d.comment;
+      result.classList.add('show');
+    });
+  </script>
+</body>
+</html>
